@@ -23,9 +23,7 @@ const auth = getAuth(app);
 
 
 // Login functionality
-document.getElementById("loginBtn").addEventListener("click", (event) => {
-  event.preventDefault(); // Prevent form from submitting
-
+document.getElementById("loginBtn").addEventListener("click", () => {
   const email = document.getElementById("email").value.trim();
   const password = document.getElementById("loginPassword").value.trim();
 
@@ -84,13 +82,9 @@ document.addEventListener('DOMContentLoaded', () => {
 
   document.addEventListener("DOMContentLoaded", () => {
     // Clear login fields
-    document.getElementById("loginUsername").value = "";
+    document.getElementById("email").value = "";
     document.getElementById("loginPassword").value = "";
   
-    // Clear signup fields
-    document.getElementById("email").value = "";
-    document.getElementById("password").value = "";
-    document.getElementById("confirmPassword").value = "";
   
     // Clear any password match message
     const message = document.getElementById("matchMessage");
