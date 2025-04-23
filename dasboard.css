@@ -1,146 +1,121 @@
-@import url('https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200');
-
 /* Global Styles */
 body {
   margin: 0;
   padding: 0;
   font-family: Arial, sans-serif;
   display: flex;
-  align-items: center;
-  justify-content: center;
   height: 100vh;
-  background-image: url(./imgs/Animated\ Shape.svg);
-  background-size: cover;
-  background-position: center;
-  color: #fff;
   overflow: hidden;
+  background-color: #f4f4f4;
+}
+
+/* Dashboard Layout */
+.dashboard {
+  display: flex;
+  width: 100%;
+  height: 100%;
 }
 
 /* Sidebar Menu */
-.menu {
+.sidebar {
+  width: 250px;
+  background-color: #333;
+  color: #fff;
+  height: 100%;
   position: fixed;
   top: 0;
   left: 0;
-  width: 100px;
-  height: 100%;
-  background: #ffffff12;
-  backdrop-filter: blur(5px);
-  box-shadow: 8px 0px 9px 0px #00000014;
-  overflow-y: auto;
-  transition: width 0.3s ease, padding 0.3s ease;
-  padding: 20px 10px 20px 0;
-  scrollbar-width: none;
-  -ms-overflow-style: none;
-  z-index: 999;
+  padding-top: 20px;
+  transition: width 0.3s ease;
 }
 
-.menu::-webkit-scrollbar {
-  display: none;
-}
-
-.menu.open {
-  width: 200px;
-  padding: 20px;
-}
-
-.menu:hover {
-  width: 200px;
-}
-
-.menu:hover li span:nth-child(2) {
-  display: block;
-  opacity: 1;
-}
-
-/* Menu List Items */
-.menu-content li {
+.sidebar .menu-content {
   list-style: none;
-  border-radius: 0px 50px 50px 0;
-  transition: background 0.3s;
-  margin-bottom: 20px;
+  padding: 0;
 }
 
-.menu-content li:hover {
-  background: #0c0c0c;
+.sidebar .menu-content li {
+  padding: 15px;
+  cursor: pointer;
+  transition: background-color 0.3s;
 }
 
-.menu-content li span:nth-child(2) {
-  display: none;
-  opacity: 0;
-  transition: opacity 0.3s ease;
+.sidebar .menu-content li:hover {
+  background-color: #444;
 }
 
-.menu:hover li span:nth-child(2) {
-  display: block;
-  opacity: 1;
-}
-
-/* Menu Links */
-a {
+.sidebar .menu-content li a {
   text-decoration: none;
-  color: rgb(213, 213, 213);
+  color: white;
   display: flex;
   align-items: center;
-  font-family: 'Calibri', sans-serif;
-  font-weight: bold;
+  font-size: 16px;
 }
 
-/* Icon Styling */
-.material-symbols-outlined {
-  padding: 10px;
-  font-size: 25px;
+.sidebar .menu-content li a .material-symbols-outlined {
   margin-right: 10px;
-  border-radius: 50%;
-  background: #0c0c0c;
 }
 
-/* Page Sections */
+/* Main Content Area */
+.main-content {
+  margin-left: 250px;
+  padding: 20px;
+  width: calc(100% - 250px);
+  background-color: #fff;
+  color: black;
+  height: 100%;
+  overflow-y: auto;
+}
+
 .section {
   display: none;
-  font-size: 18px;
+  padding: 20px;
+  background-color: #fff;
+  color: black;
+  height: 100%;
+  width: 100%;
+  box-sizing: border-box;
 }
 
 .section.active {
   display: block;
 }
 
-/* Responsive Adjustments */
+
+/* Sidebar navigation styles */
+.sidebar .menu-content li.active {
+  background-color: #555; /* Highlight the active item in a darker shade */
+}
+
+.sidebar .menu-content li.active a {
+  color: #fff; /* Make text white when active */
+}
+
+/* Prevent icon background from turning white */
+.sidebar .menu-content li.active .material-symbols-outlined {
+  background-color: transparent; /* Keep the background of the icon as it was originally */
+  color: #fff; /* Change icon color to white when active */
+}
+
+/* Optional: Add hover effect for the icon */
+.sidebar .menu-content li:hover .material-symbols-outlined {
+  background-color: transparent; /* Make the icon background darker on hover */
+}
+
+
+/* Responsive Styling */
 @media (max-width: 768px) {
-  body {
+  .dashboard {
     flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    padding: 20px;
+  }
+  
+  .sidebar {
+    width: 100%;
     height: auto;
   }
 
-  .menu {
-    width: 100px;
-    padding: 20px 5px;
-  }
-
-  .menu:hover {
-    width: 180px;
-  }
-
-  .menu:hover ~ .container {
-    margin-left: 180px;
-  }
-
-  .row {
-    flex-direction: column;
-  }
-
-  .row > .form-group {
-    min-width: 100%;
-  }
-
-  .menu-content li span:nth-child(2) {
-    display: none;
-  }
-
-  .menu:hover .menu-content li span:nth-child(2) {
-    display: block;
-    opacity: 1;
+  .main-content {
+    margin-left: 0;
+    width: 100%;
   }
 }
