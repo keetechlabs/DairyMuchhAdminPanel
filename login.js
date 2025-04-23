@@ -23,7 +23,9 @@ const auth = getAuth(app);
 
 
 // Login functionality
-document.getElementById("loginBtn").onclick = () => {
+document.getElementById("loginBtn").addEventListener("click", (event) => {
+  event.preventDefault(); // Prevent form from submitting
+
   const email = document.getElementById("loginUsername").value.trim();
   const password = document.getElementById("loginPassword").value.trim();
 
@@ -35,12 +37,13 @@ document.getElementById("loginBtn").onclick = () => {
   signInWithEmailAndPassword(auth, email, password)
     .then(() => {
       alert("Login successful!");
-      window.location.href = "./dashboard.html"; // Redirect to dashboard
+      window.location.href = "./dashboard.html";
     })
     .catch((error) => {
       alert("Login failed: " + error.message);
     });
-};
+});
+
 
 
 // Forgot Password functionality
