@@ -102,6 +102,48 @@ body {
   background-color: transparent; /* Make the icon background darker on hover */
 }
 
+/* Notification Panel */
+
+#notification .notification-container {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding: 20px;
+  max-width: 400px;
+  margin: 0 auto;
+  background-color: #fff;
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+#notification .input-container {
+  margin-bottom: 15px;
+  width: 100%;
+}
+
+#notification input, #notification textarea {
+  width: 100%;
+  padding: 10px;
+  margin-top: 5px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+}
+
+#notification button {
+  padding: 10px 20px;
+  background-color: #4CAF50;
+  color: #fff;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 16px;
+}
+
+#notification button:hover {
+  background-color: #45a049;
+}
+
 
 /* Responsive Styling */
 @media (max-width: 768px) {
