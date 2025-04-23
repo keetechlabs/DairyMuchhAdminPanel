@@ -1,21 +1,59 @@
-import { getAuth, signOut } from "https://www.gstatic.com/firebasejs/9.6.10/firebase-auth.js";
 import { initializeApp } from "https://www.gstatic.com/firebasejs/9.6.10/firebase-app.js";
+import { getAuth, signOut } from "https://www.gstatic.com/firebasejs/9.6.10/firebase-auth.js";
+import { getFunctions, httpsCallable } from "https://www.gstatic.com/firebasejs/9.6.10/firebase-functions.js";
 
-// Firebase config (reuse your config here)
 const firebaseConfig = {
   apiKey: "AIzaSyC1LY605syjchSrTiGZwc7moltzFv5FVwY",
   authDomain: "dairymuchh.firebaseapp.com",
   databaseURL: "https://dairymuchh-default-rtdb.asia-southeast1.firebasedatabase.app",
   projectId: "dairymuchh",
-  storageBucket: "dairymuchh.firebasestorage.app",
+  storageBucket: "dairymuchh.appspot.com",
   messagingSenderId: "428241956537",
-  appId: "1:428241956537:web:c481951b3075df27c37568",
-  measurementId: "G-VGQVHJ1J5F"
+  appId: "1:428241956537:web:c481951b3075df27c37568"
 };
 
-// Initialize Firebase
 const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
+const functions = getFunctions(app, "asia-southeast1"); // ✅ region
+
+// Logout
+document.getElementById("logoutBtn").addEventListener("click", () => {
+  if (confirm("Are you sure you want to log out?")) {
+    signOut(auth).then(() => {
+      alert("Logged out successfully!");
+      window.location.href = "./login.html";
+    }).catch((error) => {
+      console.log("Error logging out: " + error.message);
+    });
+  }
+});
+
+// Notification logic
+const sendNotificationBtn = document.getElementById("sendNotificationBtn");
+
+sendNotificationBtn.addEventListener("click", async () => {
+  const title = document.getElementById("title").value;
+  const message = document.getElementById("message").value;
+
+  if (!title || !message) {
+    alert("Please provide both title and message.");
+    return;
+  }
+
+  try {
+    const sendNotification = httpsCallable(functions, 'sendAdminNotification');
+    const result = await sendNotification({ title, message });
+
+    if (result.data.success) {
+      alert("Notification sent successfully!");
+    } else {
+      alert("Notification failed to send.");
+    }
+  } catch (error) {
+    console.error("Error sending notification:", error);
+    alert("Error occurred while sending the notification.");
+  }
+});
 
 // Sidebar navigation logic
 const navItems = document.querySelectorAll('.nav-item[data-target]');
@@ -58,4 +96,3 @@ document.getElementById("logoutBtn").addEventListener("click", () => {
     console.log("Logout cancelled");
   }
 });
-
