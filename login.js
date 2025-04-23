@@ -4,10 +4,6 @@ import {
   signInWithEmailAndPassword,
   sendPasswordResetEmail
 } from "https://www.gstatic.com/firebasejs/9.6.10/firebase-auth.js";
-import { setPersistence, browserLocalPersistence } from "https://www.gstatic.com/firebasejs/9.6.10/firebase-auth.js";
-  import { onAuthStateChanged } from "https://www.gstatic.com/firebasejs/9.6.10/firebase-auth.js";
-
-
 
 // Firebase config
 const firebaseConfig = {
@@ -26,36 +22,10 @@ const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
 
 
-setPersistence(auth, browserLocalPersistence)
-  .then(() => {
-    // Then sign in
-    return signInWithEmailAndPassword(auth, email, password);
-  })
-  .then(() => {
-    alert("Login successful!");
-    window.location.href = "./dashboard.html";
-  })
-  .catch((error) => {
-    alert("Login failed: " + error.message);
-  });
-
-
-onAuthStateChanged(auth, (user) => {
-  if (user) {
-    // User is signed in
-    console.log("User is logged in:", user.email);
-    // Optionally redirect to dashboard or show user info
-  } else {
-    // User is signed out
-    console.log("User is not logged in");
-    // Redirect to login if on a protected page
-    window.location.href = "./login.html";
-  }
-});
-
-
 // Login functionality
-document.getElementById("loginBtn").addEventListener("click", () => {
+document.getElementById("loginBtn").addEventListener("click", (event) => {
+  event.preventDefault(); // Prevent form from submitting
+
   const email = document.getElementById("email").value.trim();
   const password = document.getElementById("loginPassword").value.trim();
 
@@ -73,7 +43,6 @@ document.getElementById("loginBtn").addEventListener("click", () => {
       alert("Login failed: " + error.message);
     });
 });
-
 
 
 
