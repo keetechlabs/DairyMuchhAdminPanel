@@ -23,10 +23,8 @@ const auth = getAuth(app);
 
 
 // Login functionality
-document.getElementById("loginBtn").addEventListener("click", (event) => {
-  event.preventDefault(); // Prevent form from submitting
-
-  const email = document.getElementById("loginUsername").value.trim();
+document.getElementById("loginBtn").addEventListener("click", () => {
+  const email = document.getElementById("email").value.trim();
   const password = document.getElementById("loginPassword").value.trim();
 
   if (!email || !password) {
@@ -43,6 +41,7 @@ document.getElementById("loginBtn").addEventListener("click", (event) => {
       alert("Login failed: " + error.message);
     });
 });
+
 
 
 
