@@ -1,99 +1,61 @@
-  // Firebase configuration and initialization
-  
-  import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.0/firebase-app.js";
-  import { getDatabase, ref, push, set } from "https://www.gstatic.com/firebasejs/11.6.0/firebase-database.js";
-  import { signOut } from "https://www.gstatic.com/firebasejs/9.6.10/firebase-auth.js";
-  import { getAuth, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/9.6.10/firebase-auth.js";
+import { getAuth, signOut } from "https://www.gstatic.com/firebasejs/9.6.10/firebase-auth.js";
+import { initializeApp } from "https://www.gstatic.com/firebasejs/9.6.10/firebase-app.js";
 
-  const auth = getAuth(app);
+// Firebase config (reuse your config here)
+const firebaseConfig = {
+  apiKey: "AIzaSyC1LY605syjchSrTiGZwc7moltzFv5FVwY",
+  authDomain: "dairymuchh.firebaseapp.com",
+  databaseURL: "https://dairymuchh-default-rtdb.asia-southeast1.firebasedatabase.app",
+  projectId: "dairymuchh",
+  storageBucket: "dairymuchh.firebasestorage.app",
+  messagingSenderId: "428241956537",
+  appId: "1:428241956537:web:c481951b3075df27c37568",
+  measurementId: "G-VGQVHJ1J5F"
+};
 
-  onAuthStateChanged(auth, (user) => {
-    if (!user) {
-      alert("Please log in first.");
-      window.location.href = "./login.html";
-    } else {
-      console.log("User is authenticated:", user.email);
-    }
+// Initialize Firebase
+const app = initializeApp(firebaseConfig);
+const auth = getAuth(app);
+
+// Sidebar navigation logic
+const navItems = document.querySelectorAll('.nav-item[data-target]');
+const sections = document.querySelectorAll('.section');
+
+// Loop through the navigation items to add the click event
+navItems.forEach(item => {
+  item.addEventListener('click', () => {
+    const target = item.getAttribute('data-target');
+    
+    // Remove 'active' class from all sections and nav items
+    sections.forEach(s => s.classList.remove('active'));
+    navItems.forEach(i => i.classList.remove('active'));
+
+    // Add 'active' class to the clicked nav item and the corresponding section
+    item.classList.add('active');
+    const section = document.getElementById(target);
+    if (section) section.classList.add('active');
   });
-  
-  const firebaseConfig = {
-    apiKey: "AIzaSyBRfCJKzFUsYEbP3SSEkt_x5joC7sbdngE",
-    authDomain: "ktl-login-form-3ab49.firebaseapp.com",
-    databaseURL: "https://ktl-login-form-3ab49-default-rtdb.firebaseio.com",
-    projectId: "ktl-login-form-3ab49",
-    storageBucket: "ktl-login-form-3ab49.appspot.com",
-    messagingSenderId: "649057866695",
-    appId: "1:649057866695:web:8682ca481d35ffd3df3fe2"
-  };
-  const app = initializeApp(firebaseConfig);
-  const database = getDatabase(app);
-  const navItems = document.querySelectorAll('.nav-item[data-target]');
-  const sections = document.querySelectorAll('.section');
-  navItems.forEach(item => {
-    item.addEventListener('click', () => {
-      const target = item.getAttribute('data-target');
-      navItems.forEach(i => i.classList.remove('active'));
-      sections.forEach(s => s.classList.remove('active'));
-      item.classList.add('active');
-      document.getElementById(target).classList.add('active');
-    });
-  });
-  const form = document.getElementById('profileForm');
-  let currentProfileKey = null;
-  form.addEventListener('submit', async (e) => {
-    e.preventDefault();
-    const firstName = document.getElementById('firstName').value.trim();
-    const lastName = document.getElementById('lastName').value.trim();
-    const phone = document.getElementById('phone').value.trim();
-    const email = document.getElementById('email').value.trim();
-    const address1 = document.getElementById('address1').value.trim();
-    const address2 = document.getElementById('address2').value.trim();
-    const city = document.getElementById('city').value.trim();
-    const pincode = document.getElementById('pincode').value.trim();
-    const state = document.getElementById('state').value.trim();
-    if (!firstName || !lastName || !phone || !email || !address1 || !address2 || !city || !pincode || !state) {
-      alert("❌ Please fill all the fields before submitting.");
-      return;
-    }
-    try {
-      const data = {
-        firstName,
-        lastName,
-        phone,
-        email,
-        address1,
-        address2,
-        city,
-        pincode,
-        state,
-      };
-      if (currentProfileKey) {
-        await set(ref(database, 'profiles/' + currentProfileKey), data);
-        alert('✅ Profile updated successfully!');
-      } else {
-        const randomCode = Math.floor(1000000000 + Math.random() * 9000000000);
-        const newRef = push(ref(database, 'profiles'));
-        await set(newRef, {
-          ...data,
-          code: randomCode,
-          createdAt: new Date().toISOString()
-        });
-        currentProfileKey = newRef.key;
-        alert(`✅ Profile saved successfully with Code: ${randomCode}`);
-        form.querySelector('button').textContent = 'Update';
-      }
-    } catch (error) {
-      console.error("Error:", error);
-      alert("❌ " + error.message);
-    }
-  });
+});
 
-
-
+// Logout logic with Firebase Auth
 document.getElementById("logoutBtn").addEventListener("click", () => {
-  signOut(auth).then(() => {
-    alert("Logged out successfully!");
-    window.location.href = "./login.html";
-  });
+  // Show confirmation dialog
+  const confirmLogout = confirm("Are you sure you want to log out?");
+  
+  // If the user clicks "OK" (confirmLogout is true), log them out from Firebase
+  if (confirmLogout) {
+    signOut(auth).then(() => {
+      // Logout successful, show the alert
+      alert("Logged out successfully!");
+      // Redirect to login page
+      window.location.href = "./login.html";
+    }).catch((error) => {
+      // Handle sign-out errors
+      console.log("Error logging out: " + error.message);
+    });
+  } else {
+    // If the user clicks "Cancel", do nothing and close the alert
+    console.log("Logout cancelled");
+  }
 });
 
