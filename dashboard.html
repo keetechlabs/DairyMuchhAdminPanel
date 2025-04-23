@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Dashboard</title>
+  <link rel="stylesheet" href="./dasboard.css" />
+
+  <!-- Material Symbols -->
+   
+  <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" rel="stylesheet" />
+</head>
+<body>
+  <div class="dashboard">
+    <aside class="sidebar">
+      <div class="menu">
+        <ul class="menu-content">
+          <li class="nav-item" data-target="notification">
+            <a href="#"><span class="material-symbols-outlined">notifications</span><span>Notification</span></a>
+          </li>
+          <li class="nav-item" data-target="profile">
+            <a href="#"><span class="material-symbols-outlined">person</span><span>Profile</span></a>
+          </li>
+          <li class="nav-item" data-target="Orders">
+            <a href="#"><span class="material-symbols-outlined">shopping_bag</span><span>Orders</span></a>
+          </li>
+          <li class="nav-item" data-target="products">
+            <a href="#"><span class="material-symbols-outlined">category</span><span>Products</span></a>
+          </li>
+          <li class="nav-item" data-target="reports">
+            <a href="#"><span class="material-symbols-outlined">report</span><span>Reports</span></a>
+          </li>
+          <li class="nav-item" data-target="complaints">
+            <a href="#"><span class="material-symbols-outlined">shield_question</span><span>Complaints</span></a>
+          </li>
+          <li class="nav-item" data-target="help">
+            <a href="#"><span class="material-symbols-outlined">headset_mic</span><span>Help</span></a>
+          </li>
+        
+        </ul>
+      </div>
+    </aside>
+
+    <main class="main-content">
+      <section id="notification" class="section active">Your Notifications here</section>
+      <section id="profile" class="section">Manage your profile</section>
+      <section id="orders" class="section">Your order Details</section>
+      <section id="products" class="section">View Products </section>
+      <section id="reports" class="section">Adjust your reports</section>
+      <section id="complaints" class="section">Read the Terms of Use</section>
+      <section id="help" class="section">go for help</section>
+    </main>
+  </div>
+
+<script type="module" src="./js/dashboard.js"></script>
+</body>
+</html>
