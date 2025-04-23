@@ -2,6 +2,20 @@
   
   import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.0/firebase-app.js";
   import { getDatabase, ref, push, set } from "https://www.gstatic.com/firebasejs/11.6.0/firebase-database.js";
+  import { signOut } from "https://www.gstatic.com/firebasejs/9.6.10/firebase-auth.js";
+  import { getAuth, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/9.6.10/firebase-auth.js";
+
+  const auth = getAuth(app);
+
+  onAuthStateChanged(auth, (user) => {
+    if (!user) {
+      alert("Please log in first.");
+      window.location.href = "./login.html";
+    } else {
+      console.log("User is authenticated:", user.email);
+    }
+  });
+  
   const firebaseConfig = {
     apiKey: "AIzaSyBRfCJKzFUsYEbP3SSEkt_x5joC7sbdngE",
     authDomain: "ktl-login-form-3ab49.firebaseapp.com",
@@ -73,3 +87,13 @@
       alert("❌ " + error.message);
     }
   });
+
+
+
+document.getElementById("logoutBtn").addEventListener("click", () => {
+  signOut(auth).then(() => {
+    alert("Logged out successfully!");
+    window.location.href = "./login.html";
+  });
+});
+
