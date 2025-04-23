@@ -104,62 +104,73 @@ body {
 
 /* Notification Panel */
 
-.notification-container {
-  background-color: #ffffff;
-  padding: 30px;
-  border-radius: 8px;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0);
-  width: 400px;
-  max-width: 100%;
+#notification .notification-container {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding: 20px;
+  max-width: 400px;
+  margin: 0 auto;
+  background-color: #fff;
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
 
-.notification-container h2 {
-  text-align: center;
-  margin-bottom: 20px;
-  color: #0c0c0c;
-}
-
-.input-container {
+#notification .input-container {
   margin-bottom: 15px;
-}
-
-.input-container label {
-  font-size: 14px;
-  color: #555;
-  margin-bottom: 5px;
-  display: block;
-}
-
-.input-container input,
-.input-container textarea {
-  width: 90%;
-  padding: 10px 25px 10px 10px;
-  border: 1px solid #ccc;
-  border-radius: 4px;
-  font-size: 14px;
-  height: 50px;
-}
-
-.input-container textarea {
-  resize: vertical;
-  min-height: 80px;
-}
-
-.sendNotificationBtn {
   width: 100%;
-  padding: 12px;
-  background-color: #3b82f6;
-  color: white;
-  border: none;
-  border-radius: 8px;
-  font-size: 16px;
-  cursor: pointer;
-  transition: background-color 0.2s;
 }
 
-.sendNotificationBtn:hover {
-  background-color: #2563eb;
+#notification input, #notification textarea {
+  width: 100%;
+  padding: 10px;
+  margin-top: 5px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
 }
+
+#notification button {
+  padding: 10px 20px;
+  background-color: #4CAF50;
+  color: #fff;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 16px;
+}
+
+#notification button:hover {
+  background-color: #45a049;
+}
+
+/* Notification Panel */
+.profiles-container {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px;
+  padding: 20px;
+}
+
+.profile-card {
+  background: #fff;
+  border-radius: 10px;
+  padding: 15px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+  width: 250px;
+}
+
+.profile-card h3 {
+  margin: 0 0 10px;
+  font-size: 18px;
+}
+
+.profile-card p {
+  margin: 4px 0;
+  font-size: 14px;
+  color: #444;
+}
+
 
 
 /* Responsive Styling */
@@ -177,23 +188,4 @@ body {
     margin-left: 0;
     width: 100%;
   }
-}
-
-.notification-container {
-  padding: 20px;
-  width: 100%;
-  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
-}
-.notification-container h2 {
-  font-size: 20px;
-}
-.input-container input,
-.input-container textarea {
-  width: 90%;
-  padding: 10px;
-  font-size: 14px;
-}
-.sendNotificationBtn {
-  padding: 10px;
-  font-size: 15px;
 }

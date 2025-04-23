@@ -1,6 +1,8 @@
 import { initializeApp } from "https://www.gstatic.com/firebasejs/9.6.10/firebase-app.js";
 import { getAuth, signOut } from "https://www.gstatic.com/firebasejs/9.6.10/firebase-auth.js";
 import { getFunctions, httpsCallable } from "https://www.gstatic.com/firebasejs/9.6.10/firebase-functions.js";
+import { getDatabase, ref, get } from "https://www.gstatic.com/firebasejs/9.6.10/firebase-database.js";
+
 
 const firebaseConfig = {
   apiKey: "AIzaSyC1LY605syjchSrTiGZwc7moltzFv5FVwY",
@@ -15,6 +17,8 @@ const firebaseConfig = {
 const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
 const functions = getFunctions(app, "asia-southeast1"); // ✅ region
+const db = getDatabase(app);
+const profilesContainer = document.getElementById("userProfilesContainer"); // ✅ Add this
 
 // Logout
 document.getElementById("logoutBtn").addEventListener("click", () => {
@@ -96,3 +100,43 @@ document.getElementById("logoutBtn").addEventListener("click", () => {
     console.log("Logout cancelled");
   }
 });
+
+
+
+
+
+async function loadUserProfiles() {
+  try {
+    const snapshot = await get(ref(db, 'Profile Details'));
+    
+    if (snapshot.exists()) {
+      const users = snapshot.val();
+      profilesContainer.innerHTML = ""; // ✅ Clears old data
+
+      Object.keys(users).forEach(uid => {
+        const user = users[uid];
+        const card = document.createElement("div");
+        card.className = "profile-card";
+
+        card.innerHTML = `
+          <h3>${user.fullName || "No Name"}</h3>
+          <p><strong>Email:</strong> ${user.email || "N/A"}</p>
+          <p><strong>Phone:</strong> ${user.phoneNumber || "N/A"}</p>
+          <p><strong>DOB:</strong> ${user.dob || "N/A"}</p>
+          <p><strong>Wallet:</strong> ₹${user.walletBalance || 0}</p>
+          <p><strong>Premium:</strong> ${user.premiumMember ? "Yes" : "No"}</p>
+        `;
+
+        profilesContainer.appendChild(card);
+      });
+    } else {
+      profilesContainer.innerHTML = "<p>No user profiles found.</p>";
+    }
+  } catch (error) {
+    console.error("Error loading user profiles:", error);
+    profilesContainer.innerHTML = "<p>Failed to load profiles. Check console for details.</p>";
+  }
+}
+
+// Call when the profile section is loaded (or on tab click)
+document.querySelector('[data-target="profile"]').addEventListener("click", loadUserProfiles);
