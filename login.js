@@ -2,11 +2,12 @@ import { initializeApp } from "https://www.gstatic.com/firebasejs/9.6.10/firebas
 import {
   getAuth,
   signInWithEmailAndPassword,
-  sendPasswordResetEmail,
-  setPersistence,
-  browserLocalPersistence,
-  onAuthStateChanged
+  sendPasswordResetEmail
 } from "https://www.gstatic.com/firebasejs/9.6.10/firebase-auth.js";
+import { setPersistence, browserLocalPersistence } from "https://www.gstatic.com/firebasejs/9.6.10/firebase-auth.js";
+  import { onAuthStateChanged } from "https://www.gstatic.com/firebasejs/9.6.10/firebase-auth.js";
+
+
 
 // Firebase config
 const firebaseConfig = {
@@ -18,26 +19,42 @@ const firebaseConfig = {
   messagingSenderId: "428241956537",
   appId: "1:428241956537:web:c481951b3075df27c37568",
   measurementId: "G-VGQVHJ1J5F"
-};
+}
 
 // Initialize Firebase
 const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
 
-// ✅ Check if user is already logged in
+
+setPersistence(auth, browserLocalPersistence)
+  .then(() => {
+    // Then sign in
+    return signInWithEmailAndPassword(auth, email, password);
+  })
+  .then(() => {
+    alert("Login successful!");
+    window.location.href = "./dashboard.html";
+  })
+  .catch((error) => {
+    alert("Login failed: " + error.message);
+  });
+
+
 onAuthStateChanged(auth, (user) => {
   if (user) {
-    console.log("User is already logged in:", user.email);
-    if (window.location.pathname.includes("login.html")) {
-      window.location.href = "./dashboard.html";
-    }
+    // User is signed in
+    console.log("User is logged in:", user.email);
+    // Optionally redirect to dashboard or show user info
   } else {
-    console.log("No user session found");
-    // Optionally redirect to login if this is a protected page
+    // User is signed out
+    console.log("User is not logged in");
+    // Redirect to login if on a protected page
+    window.location.href = "./login.html";
   }
 });
 
-// ✅ Login functionality
+
+// Login functionality
 document.getElementById("loginBtn").addEventListener("click", () => {
   const email = document.getElementById("email").value.trim();
   const password = document.getElementById("loginPassword").value.trim();
@@ -47,10 +64,7 @@ document.getElementById("loginBtn").addEventListener("click", () => {
     return;
   }
 
-  setPersistence(auth, browserLocalPersistence)
-    .then(() => {
-      return signInWithEmailAndPassword(auth, email, password);
-    })
+  signInWithEmailAndPassword(auth, email, password)
     .then(() => {
       alert("Login successful!");
       window.location.href = "./dashboard.html";
@@ -60,13 +74,16 @@ document.getElementById("loginBtn").addEventListener("click", () => {
     });
 });
 
-// ✅ Forgot Password functionality
-document.getElementById("forgotPasswordLink")?.addEventListener("click", () => {
+
+
+
+// Forgot Password functionality
+document.getElementById("forgotPasswordLink").addEventListener("click", () => {
   const email = prompt("Enter your registered email to reset your password:");
   if (email) {
     sendPasswordResetEmail(auth, email)
       .then(() => {
-        alert("Password reset email sent.");
+        alert("Password reset email sent. Check your inbox!");
       })
       .catch((error) => {
         alert("Error: " + error.message);
@@ -74,24 +91,40 @@ document.getElementById("forgotPasswordLink")?.addEventListener("click", () => {
   }
 });
 
-// ✅ Show/Hide Password
-document.addEventListener("DOMContentLoaded", () => {
-  const togglePassword = document.getElementById('toggleLoginPassword');
-  const passwordInput = document.getElementById('loginPassword');
 
-  if (togglePassword && passwordInput) {
-    togglePassword.addEventListener('click', () => {
-      passwordInput.type = passwordInput.type === 'password' ? 'text' : 'password';
-      togglePassword.classList.toggle('fa-eye');
-      togglePassword.classList.toggle('fa-eye-slash');
-    });
-  }
+// Show/Hide Password in Login (with eye toggle inside input box)
+document.addEventListener('DOMContentLoaded', () => {
+    const togglePassword = document.getElementById('toggleLoginPassword');
+    const passwordInput = document.getElementById('loginPassword');
+  
+    if (togglePassword && passwordInput) {
+      togglePassword.addEventListener('click', () => {
+        // Toggle the type attribute
+        const isPassword = passwordInput.type === 'password';
+        passwordInput.type = isPassword ? 'text' : 'password';
+  
+        // Toggle the eye / eye-slash icon
+        togglePassword.classList.toggle('fa-eye');
+        togglePassword.classList.toggle('fa-eye-slash');
+      });
+    } else {
+      console.warn('Password toggle elements not found.');
+    }
+  });
 
-  // Clear fields if needed
-  document.getElementById("email").value = "";
-  document.getElementById("loginPassword").value = "";
-  document.getElementById("password")?.value = "";
-  document.getElementById("confirmPassword")?.value = "";
-  const message = document.getElementById("matchMessage");
-  if (message) message.textContent = "";
-});
+
+  document.addEventListener("DOMContentLoaded", () => {
+    // Clear login fields
+    document.getElementById("loginUsername").value = "";
+    document.getElementById("loginPassword").value = "";
+  
+    // Clear signup fields
+    document.getElementById("email").value = "";
+    document.getElementById("password").value = "";
+    document.getElementById("confirmPassword").value = "";
+  
+    // Clear any password match message
+    const message = document.getElementById("matchMessage");
+    if (message) message.textContent = "";
+  });
+  
